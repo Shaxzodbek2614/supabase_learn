@@ -17,6 +17,8 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+// lib/main.dart — MyApp ni o'zgartiring
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -24,14 +26,43 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Auth App',
-      // App ochilganda qaysi sahifa ko'rinsin?
-      home: _getStartPage(),
+      home: const AuthWrapper(),
     );
   }
+}
 
-  // User login bo'lganmi? Shunga qarab sahifa tanlash
-  Widget _getStartPage() {
-    final session = Supabase.instance.client.auth.currentSession;
-    return session != null ? HomePage() : const LoginPage();
+class AuthWrapper extends StatefulWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  @override
+  Widget build(BuildContext context) {
+    // Stream — auth holati o'zgarganda avtomatik rebuild qiladi
+    return StreamBuilder(
+      stream: Supabase.instance.client.auth.onAuthStateChange,
+      builder: (context, snapshot) {
+
+        // Stream hali yuklanmagan
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        // Auth holati
+        final session = snapshot.data?.session;
+
+        // Session bor → Home, yo'q → Login
+        if (session != null) {
+          return const HomePage();
+        } else {
+          return const LoginPage();
+        }
+      },
+    );
   }
 }

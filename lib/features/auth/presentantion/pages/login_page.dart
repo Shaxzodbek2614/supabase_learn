@@ -41,15 +41,11 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       );
 
-      if (response.user != null) {
-        // Login muvaffaqiyatli — Home sahifasiga o'tish
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-
     } on AuthException catch (e) {
       _showMessage('Auth xato: ${e.message}');  // aniq xato
     } catch (e) {
-      _showMessage('Boshqa xato: ${e.toString()}');  // aniq xato
+      _showMessage('Boshqa xato: ${e.toString()}');
+      print(e);// aniq xato
     } finally {
       setState(() => _isLoading = false);
     }

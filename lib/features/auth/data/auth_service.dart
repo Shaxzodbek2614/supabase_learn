@@ -1,5 +1,6 @@
-import 'package:learm_supabase/features/auth/presentantion/pages/forgot_password_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../core/supabase_client.dart';
 
 class AuthService {
   Future<AuthResponse> register({
@@ -37,7 +38,7 @@ class AuthService {
     );
   }
 
-  User? get currentUser => supabase.auth.currentUser;
+  //User? get currentUser => supabase.auth.currentUser;
 
-  bool get isLoggedIn => supabase.auth.currentUser != null;
+  //bool get isLoggedIn => supabase.auth.currentUser != null;
 }

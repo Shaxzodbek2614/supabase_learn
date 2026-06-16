@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/auth_service.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,8 +20,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(actions: [
-        IconButton(onPressed: (){
-          _authService.logout();
+        IconButton(onPressed: ()async{
+          await _authService.logout();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const LoginPage()),
+                (route) => false,
+          );
         }, icon: Icon(Icons.logout))
       ],),
       body: Center(
